@@ -12,15 +12,16 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - name: 'Run octofetch'
+    - name: 'Setup Bun Runtime'
+      uses: oven-sh/setup-bun@v1
+      with:
+        bun-version: latest
+
+    - name: 'Execute'
       env:
         GITHUB_TOKEN: ${{ inputs.github_token }}
-      run: |
-
-        echo "Running action..."
-
-        gh api graphql -F login="torvalds" -F query=@graphql/user/get-user.graphql
-
+      run: 
+        bun run ${{ github.action_path }}/index.ts
       shell: bash
 
 author: '@riteshraj-shetage'
