@@ -19,7 +19,7 @@ runs:
 
         echo "Running action..."
 
-        gh api graphql -F login="torvalds" -f query=@graphql/user/get-user.graphql
+        gh api graphql -F login="torvalds" -F query=@graphql/user/get-user.graphql
 
       shell: bash
 
