@@ -1,0 +1,26 @@
+name: 'octofetch'
+description: ''
+
+inputs:
+  github_token:
+    description: 'GitHub token for authentication.'
+    required: true
+  config_file:
+    description: 'Path to the configuration file.'
+    required: false
+
+runs:
+  using: 'composite'
+  steps:
+    - name: 'Run octofetch'
+      env:
+        GITHUB_TOKEN: ${{ inputs.github_token }}
+      run: |
+
+        echo "Running action..."
+
+        gh api graphql -F login="torvalds" -f query=@graphql/user/get-user.graphql
+
+      shell: bash
+
+author: '@riteshraj-shetage'
