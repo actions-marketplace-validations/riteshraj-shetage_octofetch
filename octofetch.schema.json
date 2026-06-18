@@ -3,6 +3,11 @@
   "$id": "https://raw.githubusercontent.com/riteshraj-shetage/octofetch/main/octofetch.schema.json",
   "title": "OctofetchConfig",
   "type": "object",
-  "required": [],
-  "properties": {}
+  "required": ["outputFile", "graphqlConfig"],
+  "properties": {
+    "outputFile": {
+      "type": "string",
+      "description": "The file path to output the fetched payload to..."
+    }
+  }
 }

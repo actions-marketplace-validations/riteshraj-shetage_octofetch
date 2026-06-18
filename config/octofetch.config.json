@@ -1,1 +1,5 @@
-{}
+{
+  "$schema": "../octofetch.schema.json",
+  "outputFile": "./data/sourced.json",
+  "graphqlConfig": {}
+}
