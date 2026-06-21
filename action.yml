@@ -1,5 +1,5 @@
 name: "octofetch"
-description: "displacing the complexity"
+description: "A declarative, lightweight GitHub GraphQL action that compiles user configs and fetches raw telemetry payloads for automated integrations."
 author: "@riteshraj-shetage"
 
 branding:
@@ -15,7 +15,7 @@ inputs:
     required: false
     default: ".github/default.config.json"
   output_file:
-    description: "Path to save the sourced JSON payload."
+    description: "Path to save the JSON payload."
     required: false
     default: "./data/sourced.json"
 
@@ -24,17 +24,14 @@ runs:
   steps:
     - name: "Setup Bun Runtime"
       uses: oven-sh/setup-bun@v1
-      with:
-        bun-version: latest
 
-    - id: execute-engine
-      name: "Execute Engine"
+    - name: "Execute Action"
       env:
         GITHUB_TOKEN: ${{ inputs.github_token }}
         CONFIG_FILE: ${{ inputs.config_file }}
         OUTPUT_FILE: ${{ inputs.output_file }}
       run: |
-        echo "::: Running Octofetch :::"
+        echo "::: Running octofetch :::"
         set -e
 
         if [ -z "$GITHUB_TOKEN" ]; then

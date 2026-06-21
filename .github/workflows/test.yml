@@ -1,19 +1,29 @@
-name: Test Octofetch Action
+name: test
 
 on:
-  workflow_dispatch: 
+  push:
+    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   test-action:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Run Action
+      - name: Run octofetch
         uses: ./
-        with:
-          github_token: ${{ secrets.OCTOFETCH_TOKEN }}
-          config_file: .github/default.config.json
-          output_file: ./data/sourced.json 
+        env:
+          GITHUB_TOKEN: ${{ secrets.OCTOFETCH_TOKEN }}
+          CONFIG_FILE: .github/default.config.json
+          OUTPUT_FILE: ./data/sourced.json
+
+      - name: Verify artifacts
+        run: |
+          if [ ! -s "./data/sourced.json" ]; then
+            echo "::error:: Output file is missing or empty."
+            exit 1
+          fi
+          echo "Payload captured successfully."

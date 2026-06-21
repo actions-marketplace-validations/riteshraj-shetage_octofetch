@@ -5,18 +5,5 @@
     "owner": "riteshraj-shetage",
     "name": "octofetch"
   },
-  "fields": [
-    "name",
-    "description",
-    {
-      "owner": {
-        "fields": ["login", "url"]
-      }
-    },
-    "stargazerCount",
-    "forkCount",
-    "issues(states: [OPEN]) { totalCount }",
-    "pullRequests(states: [OPEN]) { totalCount }",
-    "languages(first: 6, orderBy: {field: SIZE, direction: DESC}) { edges { size node { name color } } }"
-  ]
+  "fields": ["name", "description", "stargazerCount", "forkCount"]
 }
