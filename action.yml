@@ -1,28 +1,51 @@
-name: 'octofetch'
-description: ''
+name: "octofetch"
+description: "displacing the complexity"
+author: "@riteshraj-shetage"
+
+branding:
+  icon: "activity"
+  color: "gray-dark"
 
 inputs:
   github_token:
-    description: 'GitHub token for authentication.'
+    description: "GitHub token for authentication."
     required: true
   config_file:
-    description: 'Path to the configuration file.'
+    description: "Path to the configuration file."
     required: false
+    default: ".github/default.config.json"
+  output_file:
+    description: "Path to save the sourced JSON payload."
+    required: false
+    default: "./data/sourced.json"
 
 runs:
-  using: 'composite'
+  using: "composite"
   steps:
-    - name: 'Setup Bun Runtime'
+    - name: "Setup Bun Runtime"
       uses: oven-sh/setup-bun@v1
       with:
         bun-version: latest
 
-    - name: 'Execute'
+    - id: execute-engine
+      name: "Execute Engine"
       env:
         GITHUB_TOKEN: ${{ inputs.github_token }}
         CONFIG_FILE: ${{ inputs.config_file }}
-      run: 
+        OUTPUT_FILE: ${{ inputs.output_file }}
+      run: |
+        echo "::: Running Octofetch :::"
+        set -e
+
+        if [ -z "$GITHUB_TOKEN" ]; then
+          echo "::error:: GITHUB_TOKEN is missing or empty."
+          exit 1
+        fi
+
+        if [ ! -f "$CONFIG_FILE" ]; then
+          echo "::error:: Configuration file not found at path: $CONFIG_FILE"
+          exit 1
+        fi
+
         bun run ${{ github.action_path }}/index.ts
       shell: bash
-
-author: '@riteshraj-shetage'

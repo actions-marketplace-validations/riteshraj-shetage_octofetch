@@ -15,4 +15,5 @@ jobs:
         uses: ./
         with:
           github_token: ${{ secrets.OCTOFETCH_TOKEN }}
-          config_file: ./config/octofetch.config.json
+          config_file: .github/default.config.json
+          output_file: ./data/sourced.json 

@@ -1,5 +1,0 @@
-{
-  "$schema": "../docs/octofetch.schema.json",
-  "outputFile": "./data/sourced.json",
-  "graphqlUrl": "https://api.github.com/graphql"
-}

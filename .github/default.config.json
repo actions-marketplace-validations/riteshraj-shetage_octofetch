@@ -1,0 +1,22 @@
+{
+  "$schema": "https://raw.githubusercontent.com/riteshraj-shetage/octofetch/main/octofetch.schema.json",
+  "targetNode": "repository",
+  "args": {
+    "owner": "riteshraj-shetage",
+    "name": "octofetch"
+  },
+  "fields": [
+    "name",
+    "description",
+    {
+      "owner": {
+        "fields": ["login", "url"]
+      }
+    },
+    "stargazerCount",
+    "forkCount",
+    "issues(states: [OPEN]) { totalCount }",
+    "pullRequests(states: [OPEN]) { totalCount }",
+    "languages(first: 6, orderBy: {field: SIZE, direction: DESC}) { edges { size node { name color } } }"
+  ]
+}
