@@ -15,7 +15,7 @@ jobs:
 
       - name: Run octofetch
         uses: ./
-        env:
+        with:
           GITHUB_TOKEN: ${{ secrets.OCTOFETCH_ }}
           CONFIG_FILE: .github/default.config.json
           OUTPUT_FILE: ./data/sourced.json
