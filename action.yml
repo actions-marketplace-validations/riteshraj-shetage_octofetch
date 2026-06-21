@@ -1,9 +1,9 @@
 name: "octofetch"
-description: "A declarative, lightweight GitHub GraphQL action that compiles user configs and fetches raw telemetry payloads for automated integrations."
+description: "A declarative, lightweight GitHub GraphQL action that compiles user configs and fetches raw GitHub telemetry."
 author: "@riteshraj-shetage"
 
 branding:
-  icon: "activity"
+  icon: "zap"
   color: "gray-dark"
 
 inputs:
