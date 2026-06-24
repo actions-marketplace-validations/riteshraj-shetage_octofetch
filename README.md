@@ -2,37 +2,68 @@
 
 ![build](https://img.shields.io/github/actions/workflow/status/riteshraj-shetage/octofetch/test.yml?branch=main&style=flat-square&color=black&labelColor=18181b)
 
-A declarative, lightweight GitHub GraphQL action that compiles user configs and fetches raw telemetry payloads for automated integrations. Zero-dependency, powered by Bun.
+A lightweight Action to fetch custom GitHub telemetry.
+
+`octofetch` is a zero-bloat, Bun-native execution engine that fires raw `.gql` files directly against the GitHub GraphQL API.
 
 ---
 
 ## Usage
 
-Add this step to your GitHub Actions workflow to extract raw GitHub telemetry:
+Add this step to your GitHub Actions workflow:
 
 ```yaml
-- name: Fetch GitHub Telemetry
+- name: Fetch Custom Telemetry
   uses: riteshraj-shetage/octofetch@v1
-  env:
-    GITHUB_TOKEN: ${{ secrets.OCTOFETCH_TOKEN }}
-    CONFIG_FILE: .github/default.config.json
-    OUTPUT_FILE: ./data/sourced.json
+  with:
+    github_token: ${{ secrets.GITHUB_TOKEN }}
+    query_file: ".github/octofetch/repo-meta.gql"
+    variables: '{"owner": "${{ github.repository_owner }}", "name": "${{ github.event.repository.name }}"}'
+    output_file: "./data/repo-meta.json"
 ```
 
-## Configuration
+### Inputs
 
-The action executes based on a declarative JSON configuration contract.
+| Input          | Description                                                  | Required | Default               |
+| -------------- | ------------------------------------------------------------ | -------- | --------------------- |
+| `github_token` | GitHub Personal Access Token or standard workflow token.     | **Yes**  | `-`                   |
+| `query_file`   | Path to your native GraphQL query file.                      | **Yes**  | `-`                   |
+| `variables`    | A JSON string containing variables injected into your query. | No       | `{}`                  |
+| `output_file`  | Destination path to save the resulting JSON payload.         | No       | `./data/sourced.json` |
 
-### Example Config
+---
 
-```json
-{
-  "targetNode": "repository",
-  "args": {
-    "owner": "riteshraj-shetage",
-    "name": "octofetch"
-  },
-  "fields": ["name", "description", "stargazerCount", "forkCount"]
+## Query
+
+`octofetch` executes pure GraphQL. No custom syntax or translation layers.
+
+To get native IDE auto-complete and real-time schema validation:
+
+1. Install the [GraphQL VS Code extension](https://marketplace.visualstudio.com/items?itemName=GraphQL.vscode-graphql).
+2. Add a standard `.graphqlrc.yml` to your repository root:
+
+```yaml
+schema: "https://docs.github.com/public/fpt/schema.docs.graphql"
+documents: ".github/octofetch/**/*.{gql,graphql}"
+```
+
+### Example Query
+
+`.github/octofetch/repo-meta.gql`
+
+```graphql
+query ($owner: String!, $name: String!) {
+  repository(owner: $owner, name: $name) {
+    name
+    description
+    url
+    stargazerCount
+    forkCount
+    primaryLanguage {
+      name
+      color
+    }
+  }
 }
 ```
 
@@ -40,26 +71,19 @@ The action executes based on a declarative JSON configuration contract.
 
 ## Development
 
-Engineered with Bun.
+![Bun](https://img.shields.io/badge/Bun-%23000000.svg?style=flat-square&logo=bun&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-%23000000.svg?style=flat-square&logo=typescript&logoColor=white)
 
 ```bash
 # Install dependencies
 bun install
 
-# Run compiler locally
+# Execute locally
 bun run index.ts
 ```
 
-## Contracts
-
-Bind your configuration to the remote [JSON schema](https://raw.githubusercontent.com/riteshraj-shetage/octofetch/main/octofetch.schema.json) for live auto-complete and validation. If your IDE can't load it, refer to a downloaded local copy instead:
-
-```json
-"$schema": "./octofetch.schema.json"
-```
-
----
-
 ## License
 
-[MIT](LICENSE)
+MIT License © 2026 riteshraj-shetage.
+
+See the [LICENSE](LICENSE) file details.

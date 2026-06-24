@@ -1,0 +1,17 @@
+query ($owner: String!, $name: String!) {
+  repository(owner: $owner, name: $name) {
+    name
+    description
+    url
+    stargazerCount
+    forkCount
+    owner {
+      login
+      url
+    }
+    primaryLanguage {
+      name
+      color
+    }
+  }
+}

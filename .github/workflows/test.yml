@@ -13,12 +13,13 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Run octofetch
+      - name: Run octofetch action
         uses: ./
         with:
-          GITHUB_TOKEN: ${{ secrets.OCTOFETCH_ }}
-          CONFIG_FILE: .github/default.config.json
-          OUTPUT_FILE: ./data/sourced.json
+          github_token: ${{ secrets.OCTOFETCH_ }}
+          query_file: ".github/octofetch/repo-meta.gql"
+          variables: '{"owner": "${{ github.repository_owner }}", "name": "${{ github.event.repository.name }}"}'
+          output_file: ./data/sourced.json
 
       - name: Verify artifacts
         run: |

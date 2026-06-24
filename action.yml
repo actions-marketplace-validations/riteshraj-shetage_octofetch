@@ -1,5 +1,5 @@
 name: "octofetch"
-description: "A declarative, lightweight GitHub GraphQL action that compiles user configs and fetches raw GitHub telemetry."
+description: "A declarative, lightweight GitHub GraphQL action that executes raw .gql telemetry queries."
 author: "@riteshraj-shetage"
 
 branding:
@@ -10,10 +10,13 @@ inputs:
   github_token:
     description: "GitHub token for authentication."
     required: true
-  config_file:
-    description: "Path to the configuration file."
+  query_file:
+    description: "Path to the .gql query file."
+    required: true
+  variables:
+    description: "JSON string containing query variables."
     required: false
-    default: ".github/default.config.json"
+    default: "{}"
   output_file:
     description: "Path to save the JSON payload."
     required: false
@@ -28,7 +31,8 @@ runs:
     - name: "Execute Action"
       env:
         GITHUB_TOKEN: ${{ inputs.github_token }}
-        CONFIG_FILE: ${{ inputs.config_file }}
+        QUERY_FILE: ${{ inputs.query_file }}
+        VARIABLES: ${{ inputs.variables }}
         OUTPUT_FILE: ${{ inputs.output_file }}
       run: |
         echo "::: Running octofetch :::"
@@ -39,8 +43,8 @@ runs:
           exit 1
         fi
 
-        if [ ! -f "$CONFIG_FILE" ]; then
-          echo "::error:: Configuration file not found at path: $CONFIG_FILE"
+        if [ ! -f "$QUERY_FILE" ]; then
+          echo "::error:: Query file not found at: $QUERY_FILE"
           exit 1
         fi
 

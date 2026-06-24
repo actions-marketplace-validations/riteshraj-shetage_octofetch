@@ -1,71 +1,54 @@
-import { PRESETS } from "./presets";
+import * as core from '@actions/core';
+import * as github from '@actions/github';
+import { mkdirSync } from 'fs';
+import { dirname, resolve } from 'path';
 
-const token = process.env.GITHUB_TOKEN;
-const configFile = process.env.CONFIG_FILE || `${import.meta.dir}/.github/default.config.json`;
-const outputFile = process.env.OUTPUT_FILE || "./data/sourced.json";
+async function run() {
+  try {
+    const token = process.env.GITHUB_TOKEN || core.getInput('github_token', { required: true });
+    const queryFile = process.env.QUERY_FILE || core.getInput('query_file', { required: true });
+    const variablesInput = process.env.VARIABLES || core.getInput('variables') || '{}';
+    const outputFile = process.env.OUTPUT_FILE || core.getInput('output_file', { required: true });
 
-if (!token) {
-  console.error("::error:: Error: Missing GITHUB_TOKEN.");
-  process.exit(1);
-}
+    const workspace = process.env.GITHUB_WORKSPACE || process.cwd();
+    const absoluteQueryPath = resolve(workspace, queryFile);
+    const absoluteOutputPath = resolve(workspace, outputFile);
 
-try {
-  const config = JSON.parse(await Bun.file(configFile).text());
-  const { targetNode, args, presets } = config;
+    core.info(`Reading native GraphQL query from: ${queryFile}`);
 
-  let fields: any[] = config.fields || [];
-  if (presets) {
-    const presetList = Array.isArray(presets) ? presets : [presets];
-    for (const p of presetList) {
-      if (PRESETS[p]) fields = [...fields, ...PRESETS[p]];
+    const fileRef = Bun.file(absoluteQueryPath);
+    if (!(await fileRef.exists())) {
+      throw new Error(`Query file not found at path: ${absoluteQueryPath}`);
     }
-  }
+    const query = await fileRef.text();
 
-  let argString = "";
-  if (args && Object.keys(args).length > 0) {
-    const formattedArgs = Object.entries(args)
-      .map(([key, val]) => `${key}: "${val}"`)
-      .join(", ");
-    argString = `(${formattedArgs})`;
-  }
-
-  const fieldString = fields
-    .map((f: any) => {
-      if (typeof f === "string") return f;
-      const [key, val] = Object.entries(f)[0] as [string, any];
-      return `${key} { ${val.fields.join(" ")} }`;
-    })
-    .join("\n    ");
-
-  const query = `
-    query {
-      ${targetNode}${argString} {
-        ${fieldString}
+    let variables = {};
+    try {
+      variables = JSON.parse(variablesInput);
+    } catch (e) {
+      if (e instanceof Error) {
+        throw new Error(`Failed to parse variables JSON string. Ensure it is valid JSON. Error: ${e.message}`);
       }
     }
-  `;
 
-  console.log("::: Compiling Query :::\n", query);
+    const octokit = github.getOctokit(token);
+    core.info(`Executing query against GitHub API...`);
+    
+    const response = await octokit.graphql(query, variables);
 
-  const res = await fetch("https://api.github.com/graphql", {
-    method: "POST",
-    headers: { 
-      Authorization: `Bearer ${token}`, 
-      "User-Agent": "octofetch-action",
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ query })
-  });
+    mkdirSync(dirname(absoluteOutputPath), { recursive: true });
+    
+    await Bun.write(absoluteOutputPath, JSON.stringify(response, null, 2));
+    
+    core.info(`Successfully wrote telemetry payload to ${outputFile}`);
 
-  if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
-
-  const raw = await res.json() as { data?: any; errors?: any[] };
-  if (raw.errors) throw new Error(`GraphQL Error: ${JSON.stringify(raw.errors)}`);
-
-  await Bun.write(outputFile, JSON.stringify(raw.data, null, 2));
-  console.log(`::: Output written to ${outputFile} :::`);
-
-} catch (e: any) {
-  console.error("Fatal:", e.message);
-  process.exit(1);
+  } catch (error) {
+    if (error instanceof Error) {
+      core.setFailed(`octofetch failed: ${error.message}`);
+    } else {
+      core.setFailed(`octofetch failed with an unknown error.`);
+    }
+  }
 }
+
+run();
