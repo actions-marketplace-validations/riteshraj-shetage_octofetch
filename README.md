@@ -4,7 +4,7 @@
 
 A lightweight Action to fetch custom GitHub telemetry.
 
-`octofetch` is a zero-bloat, Bun-native execution engine that fires raw `.gql` files directly against the GitHub GraphQL API.
+`octofetch` is a zero-bloat, Bun-native execution engine that fires raw query files directly against the GitHub GraphQL API.
 
 ---
 
