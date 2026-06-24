@@ -1,5 +1,5 @@
 name: "octofetch"
-description: "A declarative, lightweight GitHub GraphQL action that executes raw .gql telemetry queries."
+description: "A lightweight Action to fetch custom GitHub telemetry"
 author: "@riteshraj-shetage"
 
 branding:
@@ -11,7 +11,7 @@ inputs:
     description: "GitHub token for authentication."
     required: true
   query_file:
-    description: "Path to the .gql query file."
+    description: "Path to the GraphQL query file."
     required: true
   variables:
     description: "JSON string containing query variables."
