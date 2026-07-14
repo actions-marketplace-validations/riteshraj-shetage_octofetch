@@ -1,11 +1,8 @@
 # octofetch
 
-<div align="left">
-  <img src="https://img.shields.io/github/actions/workflow/status/riteshraj-shetage/octofetch/test.yml?branch=main&style=flat-square&labelColor=18181b&logo=github&logoColor=white" alt="build">&nbsp;
-  <img src="https://img.shields.io/github/v/release/riteshraj-shetage/octofetch?style=flat-square&labelColor=18181b&logo=github&logoColor=white" alt="release">
-  <br>
-  <br>
-</div>
+<img src="https://img.shields.io/github/actions/workflow/status/riteshraj-shetage/octofetch/test.yml?branch=main&style=flat-square&labelColor=18181b&logo=github&logoColor=white" alt="build">&nbsp;
+<img src="https://img.shields.io/github/v/release/riteshraj-shetage/octofetch?style=flat-square&labelColor=18181b&logo=github&logoColor=white" alt="release">
+<br>
 
 **[octofetch](https://github.com/marketplace/actions/octofetch)** is a lightweight, Bun-native GitHub action that fires raw query files directly against the [GitHub GraphQL API](https://docs.github.com/en/graphql).
 
