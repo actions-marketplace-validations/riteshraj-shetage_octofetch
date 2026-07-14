@@ -1,10 +1,9 @@
-# octofetch
+# [octofetch](https://github.com/marketplace/actions/octofetch) Github Action
 
-![build](https://img.shields.io/github/actions/workflow/status/riteshraj-shetage/octofetch/test.yml?branch=main&style=flat-square&color=black&labelColor=18181b)
+![build](https://img.shields.io/github/actions/workflow/status/riteshraj-shetage/octofetch/test.yml?branch=main&style=flat-square&labelColor=18181b&logo=github&logoColor=white)
+![release](https://img.shields.io/github/v/release/riteshraj-shetage/octofetch?style=flat-square&labelColor=18181b&logo=github&logoColor=white)
 
-A lightweight Action to fetch custom GitHub telemetry.
-
-`octofetch` is a zero-bloat, Bun-native execution engine that fires raw query files directly against the GitHub GraphQL API.
+**octofetch** is a lightweight, Bun-native execution engine that fires raw query files directly against the [GitHub GraphQL API](https://docs.github.com/en/graphql).
 
 ---
 
