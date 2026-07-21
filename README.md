@@ -1,10 +1,11 @@
 # octofetch
 
-<img src="https://img.shields.io/github/actions/workflow/status/riteshraj-shetage/octofetch/test.yml?branch=main&style=flat-square&labelColor=18181b&logo=github&logoColor=white" alt="build">&nbsp;
-<img src="https://img.shields.io/github/v/release/riteshraj-shetage/octofetch?style=flat-square&labelColor=18181b&logo=github&logoColor=white" alt="release">
+![build](https://img.shields.io/github/actions/workflow/status/riteshraj-shetage/octofetch/test.yml?branch=main&style=flat-square&labelColor=18181b&logo=github&logoColor=white)
+![release](https://img.shields.io/github/v/release/riteshraj-shetage/octofetch?style=flat-square&labelColor=18181b&logo=github&logoColor=white)
+
 <br>
 
-**[octofetch](https://github.com/marketplace/actions/octofetch)** is a lightweight, Bun-native GitHub action that fires raw query files directly against the [GitHub GraphQL API](https://docs.github.com/en/graphql).
+**octofetch** is a lightweight, zero-config, Bun-native `GitHub action` that executes raw query files against the [GitHub GraphQL API](https://docs.github.com/en/graphql) and dumps clean JSON payloads.
 
 ---
 
@@ -13,27 +14,24 @@
 Add this step to your GitHub Actions workflow:
 
 ```yaml
-- name: Fetch Custom Telemetry
+- name: Fetch Custom Telemetry using octofetch
   uses: riteshraj-shetage/octofetch@v1
   with:
-    github_token: ${{ secrets.GITHUB_TOKEN }}
-    query_file: ".github/octofetch/repo-meta.gql"
-    variables: '{"owner": "${{ github.repository_owner }}", "name": "${{ github.event.repository.name }}"}'
-    output_file: "./data/repo-meta.json"
+    query_file: ".github/octofetch/your-query.gql"
 ```
 
 ### Inputs
 
-| Input          | Description                                                  | Required | Default               |
-| -------------- | ------------------------------------------------------------ | -------- | --------------------- |
-| `github_token` | GitHub Personal Access Token or standard workflow token.     | **Yes**  | `-`                   |
-| `query_file`   | Path to your native GraphQL query file.                      | **Yes**  | `-`                   |
-| `variables`    | A JSON string containing variables injected into your query. | No       | `{}`                  |
-| `output_file`  | Destination path to save the resulting JSON payload.         | No       | `./data/sourced.json` |
+| Input          | Description                                                        | Required | Default               |
+| -------------- | ------------------------------------------------------------------ | -------- | --------------------- |
+| `github_token` | GitHub token for authentication.                                   | No       | `${{ github.token }}` |
+| `query_file`   | Path to your native GraphQL query file.                            | **Yes**  | `-`                   |
+| `variables`    | A JSON string containing variables to be injected into your query. | No       | `{}`                  |
+| `output_file`  | Destination path to save the resulting JSON payload.               | No       | `./data/sourced.json` |
 
 ---
 
-## Query
+## GraphQL
 
 `octofetch` executes pure GraphQL. No custom syntax or translation layers.
 
@@ -48,8 +46,6 @@ documents: ".github/octofetch/**/*.{gql,graphql}"
 ```
 
 ### Example Query
-
-`.github/octofetch/repo-meta.gql`
 
 ```graphql
 query ($owner: String!, $name: String!) {

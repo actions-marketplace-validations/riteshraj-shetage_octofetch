@@ -1,6 +1,6 @@
 {
   "name": "octofetch",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A lightweight Action to fetch custom GitHub telemetry",
   "main": "index.ts",
   "type": "module",
