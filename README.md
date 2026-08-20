@@ -22,12 +22,12 @@ Add this step to your GitHub Actions workflow:
 
 ### Inputs
 
-| Input          | Description                                                        | Required | Default               |
-| -------------- | ------------------------------------------------------------------ | -------- | --------------------- |
-| `github_token` | GitHub token for authentication.                                   | No       | `${{ github.token }}` |
-| `query_file`   | Path to your native GraphQL query file.                            | **Yes**  | `-`                   |
-| `variables`    | A JSON string containing variables to be injected into your query. | No       | `{}`                  |
-| `output_file`  | Destination path to save the resulting JSON payload.               | No       | `./data/sourced.json` |
+| Input          | Description                                                                 | Required | Default               |
+| -------------- | --------------------------------------------------------------------------- | -------- | --------------------- |
+| `github_token` | GitHub token for authentication. Optional; defaults to ${{ github.token }}. | No       | `${{ github.token }}` |
+| `query_file`   | Path to a GraphQL query file in the repository.                             | **Yes**  | `-`                   |
+| `variables`    | A JSON string containing variables to be injected into your query.          | No       | `{}`                  |
+| `output_file`  | Destination path to save the resulting JSON payload.                        | No       | `./data/sourced.json` |
 
 ---
 
