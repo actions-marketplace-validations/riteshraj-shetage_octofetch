@@ -1,4 +1,4 @@
-# octofetch
+# ⚡octofetch
 
 ![build](https://img.shields.io/github/actions/workflow/status/riteshraj-shetage/octofetch/test.yml?branch=main&style=flat-square&labelColor=18181b&logo=github&logoColor=white)
 ![release](https://img.shields.io/github/v/release/riteshraj-shetage/octofetch?style=flat-square&labelColor=18181b&logo=github&logoColor=white)
@@ -14,7 +14,7 @@
 Add this step to your GitHub Actions workflow:
 
 ```yaml
-- name: Fetch Custom Telemetry using octofetch
+- name: octofetch
   uses: riteshraj-shetage/octofetch@v1
   with:
     query_file: ".github/octofetch/your-query.gql"
@@ -22,12 +22,14 @@ Add this step to your GitHub Actions workflow:
 
 ### Inputs
 
-| Input          | Description                                                                 | Required | Default               |
-| -------------- | --------------------------------------------------------------------------- | -------- | --------------------- |
-| `github_token` | GitHub token for authentication. Optional; defaults to ${{ github.token }}. | No       | `${{ github.token }}` |
-| `query_file`   | Path to a GraphQL query file in the repository.                             | **Yes**  | `-`                   |
-| `variables`    | A JSON string containing variables to be injected into your query.          | No       | `{}`                  |
-| `output_file`  | Destination path to save the resulting JSON payload.                        | No       | `./data/sourced.json` |
+| Input          | Default               | Description                                                                                                        |
+| -------------- | --------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `github_token` | `${{ github.token }}` | GitHub token for authentication. _Optional *_                                                                      |
+| `query_file`   | _None_                | **Required.** Path to a GraphQL query file in the repository.                                                      |
+| `variables`    | `{}`                  | A JSON string containing variables to be injected into the query.                                                  |
+| `output_file`  | `./data/sourced.json` | Destination path to save the resulting JSON payload.                                                               |
+
+> _* Required only if your query needs scopes beyond the default token's permissions._
 
 ---
 
