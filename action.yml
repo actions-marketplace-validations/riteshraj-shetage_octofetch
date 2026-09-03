@@ -8,8 +8,9 @@ branding:
 
 inputs:
   github_token:
-    description: "GitHub token for authentication."
-    required: true
+    description: "GitHub token for authentication. (Default: Built-in GITHUB_TOKEN)"
+    required: false
+    default: "${{ github.token }}"
   query_file:
     description: "Path to the GraphQL query file."
     required: true
@@ -48,5 +49,5 @@ runs:
           exit 1
         fi
 
-        bun run ${{ github.action_path }}/index.ts
+        bun run "${{ github.action_path }}/index.ts"
       shell: bash

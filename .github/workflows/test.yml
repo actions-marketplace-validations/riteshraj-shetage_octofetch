@@ -16,7 +16,6 @@ jobs:
       - name: Run octofetch action
         uses: ./
         with:
-          github_token: ${{ secrets.OCTOFETCH_ }}
           query_file: ".github/octofetch/repo-meta.gql"
           variables: '{"owner": "${{ github.repository_owner }}", "name": "${{ github.event.repository.name }}"}'
           output_file: ./data/sourced.json
